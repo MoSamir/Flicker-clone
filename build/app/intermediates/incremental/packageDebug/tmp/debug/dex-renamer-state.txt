@@ -1,0 +1,4 @@
+#Sat Jun 08 23:22:10 EET 2019
+base.0=/Users/new/Desktop/FLUTTER/flash-chat-flutter/orange_assignment/build/app/intermediates/transforms/dexMerger/debug/0
+path.0=classes.dex
+renamed.0=classes.dex
