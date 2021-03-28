@@ -8,6 +8,7 @@ import 'package:orange_assignment/bloc/mainGalleryBloc/State.dart';
 import 'package:orange_assignment/models/GroupModel.dart';
 import 'package:orange_assignment/models/PhotoModel.dart';
 
+import 'package:flutter/foundation.dart' show kIsWeb;
 
 class GroupSearch extends StatefulWidget {
   @override
@@ -77,7 +78,7 @@ class _GroupSearch extends State<GroupSearch> {
                       bloc: _groupsBloc,
                       builder: (BuildContext context, GroupStates state) {
                         if(state is GroupsLoaded){
-                          return GridView.count(crossAxisCount: 2,
+                          return GridView.count(crossAxisCount: kIsWeb ? 4 : 2,
                             controller: _scrollController,
                             children: getImagesWidget(state.dataModels!),
                           );

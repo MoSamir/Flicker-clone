@@ -1,3 +1,6 @@
+import 'dart:io';
+import 'package:flutter/foundation.dart' show kIsWeb;
+
 import 'package:flutter/material.dart';
 import 'package:orange_assignment/APIs/APIs.dart';
 import 'package:orange_assignment/bloc/groupSearchBloc/States.dart';
@@ -33,7 +36,7 @@ class _MainGalleryState extends State<MainGallery> {
         bloc: _imagesBloc,
           builder: (BuildContext context, GalleryState state) {
           if(state is LoadedState){
-            return GridView.count(crossAxisCount: 2,
+            return GridView.count(crossAxisCount:  kIsWeb ? 4 : 2,
             controller: _scrollController,
             children: getImagesWidget(state.dataModels!),
             );

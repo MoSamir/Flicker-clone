@@ -12,8 +12,8 @@ class GroupsLoaded extends GroupStates{
   GroupsLoaded({this.dataModels,this.isDataEnded}):super([dataModels,isDataEnded]);
   GroupsLoaded copyWith(List<GroupModel> dataModels , bool isFinished){
     return GroupsLoaded(
-      dataModels: dataModels ?? this.dataModels,
-      isDataEnded: isFinished ?? this.isDataEnded
+      dataModels: dataModels ,
+      isDataEnded: isFinished
     );
   }
 }
