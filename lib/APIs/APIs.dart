@@ -22,7 +22,7 @@ class APIs{
 
     List<PhotoModel> dataModels = [];
     String URL = sprintf(Keys.GET_RECENT,[RECENT_PAGE_NUMBER]);
-    final response = await http.get(URL);
+    final response = await http.get(Uri.parse(URL));
       if(response.statusCode == 200) {
         for (int i = 0; i < json.decode(response.body)['photos']['photo'].length; i++) {
           PhotoModel mod = PhotoModel.fromJson(jsonDecode(response.body)['photos']['photo'][i]);
@@ -36,11 +36,11 @@ class APIs{
     }
 
 
-  static Future<List<GroupModel>>LoadGroups(String searchQuery)async{
+  static Future<List<GroupModel>>LoadGroups(String? searchQuery)async{
     GROUPS_PAGE_NUMBER ++ ;
     List<GroupModel> dataModels = [];
     String URL = sprintf(Keys.GET_GROUPS,[searchQuery,RECENT_PAGE_NUMBER]);
-    final response = await http.get(URL);
+    final response = await http.get(Uri.parse(URL));
     if(response.statusCode == 200) {
       for(int i = 0 ; i < json.decode(response.body)['groups']['group'].length ; i++){
         GroupModel model =  GroupModel.fromJson(json.decode(response.body)['groups']['group'][i]);

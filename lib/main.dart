@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:orange_assignment/screens/group_search.dart';
 import 'package:orange_assignment/screens/main_gallery.dart';
 import 'package:bloc/bloc.dart';
 
 
 void main(){
-  BlocSupervisor.delegate = SimpleBlocDelegate();
+
   runApp(MaterialApp(
     debugShowCheckedModeBanner: false,
     home: HomePage(),
@@ -29,7 +31,7 @@ class HomePage extends StatelessWidget {
 }
 
 
-class SimpleBlocDelegate extends BlocDelegate {
+class SimpleBlocDelegate extends BlocObserver {
   @override
   void onTransition(Bloc bloc, Transition transition) {
     super.onTransition(bloc, transition);

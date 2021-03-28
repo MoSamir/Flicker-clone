@@ -9,9 +9,11 @@ import 'Event.dart';
 class GroupBloc extends Bloc<GroupEvents, GroupStates> {
   StreamController<String> _userInput = StreamController<String>.broadcast();
 
+  GroupBloc(GroupStates initialState) : super(initialState);
+
   Stream<String> get outPut => _userInput.stream;
   Function(String) get inPut => _userInput.sink.add;
-  String searchQuery;
+  String? searchQuery;
 
   onSearchPressed(String searchTemp) async {
 
@@ -19,39 +21,35 @@ class GroupBloc extends Bloc<GroupEvents, GroupStates> {
       APIs.LoadFirstGroup();
     }
     searchQuery = searchTemp;
-    if (searchQuery == null || searchQuery.isEmpty) {
+    if (searchQuery == null || searchQuery!.isEmpty) {
       _userInput.sink.addError("Search Can't be empty");
       return;
     }
-    dispatch(SearchButtonClicked());
+    add(SearchButtonClicked());
   }
 
-  @override
-  // TODO: implement initialState
-  GroupStates get initialState => WatingUserInput();
 
   @override
   Stream<GroupStates> mapEventToState(GroupEvents event) async* {
     try {
       if (event is SearchButtonClicked) {
-        if (currentState is GroupUninitialized || currentState is WatingUserInput) {
+        if (state is GroupUninitialized || state is WatingUserInput) {
           final response = await APIs.LoadGroups(searchQuery);
           yield GroupsLoaded(dataModels: response, isDataEnded: false);
           return;
         }
-        if (currentState is GroupsLoaded) {
+        if (state is GroupsLoaded) {
           yield GroupUninitialized();
-          dispatch(SearchButtonClicked());
+          add(SearchButtonClicked());
           return ;
         }
       } else if (event is Scrolled) {
         final response = await APIs.LoadGroups(searchQuery);
         if (response.isEmpty) {
-          yield (currentState as GroupsLoaded).copyWith(
-              (currentState as GroupsLoaded).dataModels + response, true);
+          yield (state as GroupsLoaded).copyWith((state as GroupsLoaded).dataModels! + response, true);
         } else {
           yield GroupsLoaded(
-              dataModels: (currentState as GroupsLoaded).dataModels + response,
+              dataModels: (state as GroupsLoaded).dataModels! + response,
               isDataEnded: false);
         }
       }

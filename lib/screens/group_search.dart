@@ -16,7 +16,7 @@ class GroupSearch extends StatefulWidget {
 
 class _GroupSearch extends State<GroupSearch> {
   final _scrollController = ScrollController();
-  final GroupBloc _groupsBloc = GroupBloc();
+  final GroupBloc _groupsBloc = GroupBloc(WatingUserInput());
   final _scrollThreshold = 25*100.0;
   TextEditingController searchController = TextEditingController();
 
@@ -51,7 +51,7 @@ class _GroupSearch extends State<GroupSearch> {
                         ),
                         labelText: 'Search Groups',
                         hintText: 'Enter non-Empty Group name',
-                        errorText: snapshot.error,
+                        errorText: snapshot.error as String?,
                       ),
                     ),
                   );
@@ -79,7 +79,7 @@ class _GroupSearch extends State<GroupSearch> {
                         if(state is GroupsLoaded){
                           return GridView.count(crossAxisCount: 2,
                             controller: _scrollController,
-                            children: getImagesWidget(state.dataModels),
+                            children: getImagesWidget(state.dataModels!),
                           );
                         } else if(state is GropusLoadError){
                           return Center(
@@ -108,7 +108,7 @@ class _GroupSearch extends State<GroupSearch> {
     final maxScroll = _scrollController.position.maxScrollExtent;
     final currentScroll = _scrollController.position.pixels;
     if (maxScroll - currentScroll <= _scrollThreshold) {
-      _groupsBloc.dispatch(Scrolled());
+      _groupsBloc.add(Scrolled());
     }
 
   }
@@ -121,7 +121,7 @@ class _GroupSearch extends State<GroupSearch> {
           decoration: ShapeDecoration( shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(8),
             side: BorderSide(width: 1),
-          ),   image: DecorationImage(image: NetworkImage(model.iconPath),fit: BoxFit.cover)),
+          ),   image: DecorationImage(image: NetworkImage(model.iconPath!),fit: BoxFit.cover)),
           width: 100,
           height: 100,
           child: Card(
@@ -133,7 +133,7 @@ class _GroupSearch extends State<GroupSearch> {
               mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
                 //Image.network(model.imagePath,fit: BoxFit.cover,height: 150,),
-                Text(model.groupTitle, maxLines: 2 , textAlign: TextAlign.center,style: TextStyle(
+                Text(model.groupTitle!, maxLines: 2 , textAlign: TextAlign.center,style: TextStyle(
                     backgroundColor: Color.fromARGB(100,0, 0,0),
                     color: Colors.white,
                     fontSize: 15,

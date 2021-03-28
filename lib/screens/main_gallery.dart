@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:orange_assignment/APIs/APIs.dart';
+import 'package:orange_assignment/bloc/groupSearchBloc/States.dart';
 import 'package:orange_assignment/bloc/mainGalleryBloc/Controller.dart';
 import 'package:orange_assignment/bloc/mainGalleryBloc/Event.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -14,12 +15,12 @@ class MainGallery extends StatefulWidget {
 
 class _MainGalleryState extends State<MainGallery> {
   final _scrollController = ScrollController();
-  final GalleryBloc _imagesBloc = GalleryBloc();
+  final GalleryBloc _imagesBloc = GalleryBloc(FirstEnterState());
   final _scrollThreshold = 25*100.0;
 
   _MainGalleryState(){
     _scrollController.addListener(_onScroll);
-    _imagesBloc.dispatch(new Fetch());
+    _imagesBloc.add(new Fetch());
   }
 
   @override
@@ -34,7 +35,7 @@ class _MainGalleryState extends State<MainGallery> {
           if(state is LoadedState){
             return GridView.count(crossAxisCount: 2,
             controller: _scrollController,
-            children: getImagesWidget(state.dataModels),
+            children: getImagesWidget(state.dataModels!),
             );
           } else if(state is FirstEnterState){
             return Center(
@@ -53,7 +54,7 @@ class _MainGalleryState extends State<MainGallery> {
     final maxScroll = _scrollController.position.maxScrollExtent;
     final currentScroll = _scrollController.position.pixels;
     if (maxScroll - currentScroll <= _scrollThreshold) {
-      _imagesBloc.dispatch(Fetch());
+      _imagesBloc.add(Fetch());
     }
 
   }
@@ -66,7 +67,7 @@ class _MainGalleryState extends State<MainGallery> {
         decoration: ShapeDecoration( shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(8),
         side: BorderSide(width: 1),
-      ),   image: DecorationImage(image: NetworkImage(model.imagePath),fit: BoxFit.cover)),
+      ),   image: DecorationImage(image: NetworkImage(model.imagePath!),fit: BoxFit.cover)),
         width: 100,
           height: 100,
         child: Card(
@@ -78,7 +79,7 @@ class _MainGalleryState extends State<MainGallery> {
             mainAxisAlignment: MainAxisAlignment.end,
             children: <Widget>[
               //Image.network(model.imagePath,fit: BoxFit.cover,height: 150,),
-              Text(model.imgTitle, maxLines: 2 , textAlign: TextAlign.center,style: TextStyle(
+              Text(model.imgTitle!, maxLines: 2 , textAlign: TextAlign.center,style: TextStyle(
                 backgroundColor: Color.fromARGB(100,0, 0,0),
                 color: Colors.white,
                 fontSize: 15,
